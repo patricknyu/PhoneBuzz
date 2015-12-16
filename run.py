@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request, redirect
 import twilio.twiml
 app = Flask(__name__)
 
@@ -10,7 +10,7 @@ callers = {
 def hello_monkey():
 
 	#Get the callers number
-	from_number = requrest.values.get('From',None)
+	from_number = request.values.get('From',None)
 	resp = twilio.twiml.Response()
 	
 	#check if the caller is someone we know

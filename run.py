@@ -2,11 +2,22 @@ from flask import Flask
 import twilio.twiml
 app = Flask(__name__)
 
+callers = {
+	"+17146515438": "Patrick",
+	"+14158675310": "Boots"}
+
 @app.route("/",methods = ['GET','POST'])
 def hello_monkey():
-	"""Respond to incoming requests."""
+
+	#Get the callers number
+	from_number = requrest.values.get('From',None)
 	resp = twilio.twiml.Response()
-	resp.say("Hello Monkey")
+	
+	#check if the caller is someone we know
+	if from_number in callers:
+		resp.say("Hello " + callers[from_number])
+	else:
+		resp.say("Helo Monkey")
 
 	return str(resp)
 

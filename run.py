@@ -15,9 +15,13 @@ def hello_monkey():
 	
 	#check if the caller is someone we know
 	if from_number in callers:
-		resp.say("Hello " + callers[from_number])
+		caller = callers[from_number]
 	else:
-		resp.say("Helo Monkey")
+		caller = "Monkey"
+	
+	resp.say("Hello " + caller)
+	#Play an MP3
+	resp.play("http://demo.twilio.com/hellomonkey/monkey.mp3")
 
 	return str(resp)
 

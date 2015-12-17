@@ -49,7 +49,7 @@ def handle_key():
 			ans = i
 		return ans
 	resp = twilio.twiml.Response()
-	for x in range(int(digit_pressed)+1):
+	for x in range(1,int(digit_pressed)+1):
 		resp.say(str(int_to_fizzbuzz(x)))
 	return str(resp)
 

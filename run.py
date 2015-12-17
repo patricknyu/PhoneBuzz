@@ -25,8 +25,8 @@ def hello_monkey():
 	#Play an MP3
 	resp.play("http://demo.twilio.com/hellomonkey/monkey.mp3")
 	
-	with resp.gather(numDigits=1, action = "/handle-key",method= "POST") as g:
-		g.say("Press a number. I will return Fizz Buzz up to that number.")
+	with resp.gather(finishOnKey = '#', action = "/handle-key",method= "POST") as g:
+		g.say("Press a number. Then press pound.  I will return Fizz Buzz up to that number.")
 	return str(resp)
 @app.route("/handle-key",methods = ['GET','Post'])
 def handle_key():

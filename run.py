@@ -26,19 +26,33 @@ def hello_monkey():
 	resp.play("http://demo.twilio.com/hellomonkey/monkey.mp3")
 	
 	with resp.gather(numDigits=1, action = "/handle-key",method= "POST") as g:
-		g.say("To speak to a real monkey, press 1.  Press any other key to start over.")
+		g.say("Press a number. I will return Fizz Buzz up to that number.")
 	return str(resp)
 @app.route("/handle-key",methods = ['GET','Post'])
 def handle_key():
 	digit_pressed = request.values.get('Digits',None)
-	if digit_pressed == "1":
+	"""if digit_pressed == "1":
 		resp = twilio.twiml.Response()
 		resp.dial("+13105551212")
 		resp.say("The call failed, or the remote party hung up.  Goodbye.")
 
 		return str(resp)
 	else:
-		return redirect("/")
+		return redirect("/")"""
+	def int_to_fizzbuzz(i):
+		ans = ''
+		if (i %3==0):
+			ans +="fizz"
+		if(i%5==0):
+			ans+="buzz"
+		if(i%3!=0 and i%5!=0):
+			ans = i
+		return ans
+	resp = twilio.twiml.Response()
+	for x in range(int(digit_pressed)+1):
+		resp.say(str(int_to_fizzbuzz(x)))
+	return str(resp)
+
 
 if __name__ == "__main__":
 	app.run(debug=False)

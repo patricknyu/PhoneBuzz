@@ -1,18 +1,33 @@
 from flask import Flask, request, redirect, render_template
+import twilio_client
+from twilio.rest import TwilioRestClient
 #from __future__ import with_statement
 import twilio.twiml
-
+import validator
+import twilio_client
 app = Flask(__name__)
 
 callers = {
 	"+17146515438": "Patrick",
 	"+14158675310": "Boots"}
 
+history = []
+callRequests = {}
+
+"""@app.before_request
+def before_request():
+  if request.path in ["/call", "/handle-key"]:
+	      if (not validator.isValid(request.url, request.headers['X-Twilio-Signature'], request.form)):
+		            return "That is invalid"
+"""
 @app.route('/')
+@app.route('/index')
 def html_render():
+    global history
+    global callRequests
     return render_template('index.html')
 
-@app.route("/hello_monkey",methods = ['GET','POST'])
+"""@app.route("/hello_monkey",methods = ['GET','POST'])
 def hello_monkey():
 
 	#Get the callers number
@@ -32,9 +47,23 @@ def hello_monkey():
 	with resp.gather(finishOnKey = '#', action = "/handle-key",method= "POST") as g:
 		g.say("Press a number. Then press pound.  I will return Fizz Buzz up to that number.")
 	return str(resp)
-@app.route("/handle-key",methods = ['GET','Post'])
+"""
+@app.route("/call",methods = ["POST"])
+def call():
+	currentTime = request.args.get('time')
+	resp = twilio.twiml.Response()
+	with resp.gather(action=("/handle-key?time="+currentTime)) as g:
+		g.say("Press a number. Then press pound.  I will return Fizz Buzz up to that number.")
+	return str(resp)
+
+@app.route("/handle-key",methods = ['GET','POST'])
 def handle_key():
-	digit_pressed = request.values.get('Digits',None)
+	global callRequests
+	digit_pressed = request.form['Digits']
+	currentTime = request.args.get('time')
+
+	callRequests[currentTime] += (digit_pressed,)
+
 	"""if digit_pressed == "1":
 		resp = twilio.twiml.Response()
 		resp.dial("+13105551212")
@@ -56,17 +85,29 @@ def handle_key():
 	for x in range(1,int(digit_pressed)+1):
 		resp.say(str(int_to_fizzbuzz(x)))
 	return str(resp)
+
 @app.route("/make_call",methods=["POST"])
 def make_call():
+	global history
+	global callRequests
 	# Get these credentials from http://twilio.com/user/account
 	account_sid = "AC293ba385dfd140435b955c184eb6b7a7"
 	auth_token = "ae6f6c20e96fc7a9803a100292ab5284"
 	client = TwilioRestClient(account_sid, auth_token)
-	  
+
+	num = request.form['phone']
+	delay = request.form['delay']
+	currentTime = time.strftime('%d.%m.%Y%I.%M.%S')
+	#history.append(currentTime)
+	#callRequests[currentTime] = (delay,num)
+	#time.sleep(int(delay))
+
 	# Make the call
-	call = client.calls.create(to="+17146515438",  # Any phone number
+	call = client.calls.create(to=num,  # Any phone number
 	from_="+15167145942", # Must be a valid Twilio number
-	url="https://fathomless-gorge-8817.herokuapp.com")
-	print call.sid
+	url=request.url_root+"call?time="+currentTime)
+	
+	return ""
+
 if __name__ == "__main__":
 	app.run(debug=False)

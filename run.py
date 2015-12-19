@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect
+from flask import Flask, request, redirect, render_template
 #from __future__ import with_statement
 import twilio.twiml
 
@@ -7,8 +7,9 @@ app = Flask(__name__)
 callers = {
 	"+17146515438": "Patrick",
 	"+14158675310": "Boots"}
+
 @app.route('/')
-def geo_distance():
+def html_render():
     return render_template('index.html')
 
 @app.route("/hello_monkey",methods = ['GET','POST'])
@@ -67,6 +68,5 @@ def make_call():
 	from_="+15167145942", # Must be a valid Twilio number
 	url="https://fathomless-gorge-8817.herokuapp.com")
 	print call.sid
-
 if __name__ == "__main__":
 	app.run(debug=False)

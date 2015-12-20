@@ -55,13 +55,13 @@ def call():
 		g.say("Press a number. Then press pound.  I will return Fizz Buzz up to that number.")
 	return str(resp)
 
-@app.route("/handle_key",methods = ['GET','POST'])
+@app.route("/handle_key",methods = ['POST'])
 def handle_key():
 	global callRequests
 	digit_pressed = request.form['Digits']
 	currentTime = request.args.get('time')
 
-	callRequests[currentTime] += (digit_pressed,)
+	#callRequests[currentTime] += (digit_pressed,)
 
 	"""if digit_pressed == "1":
 		resp = twilio.twiml.Response()
@@ -73,12 +73,12 @@ def handle_key():
 		return redirect("/")"""
 	def int_to_fizzbuzz(i):
 		ans = ''
-		if (i %3==0):
-			ans +="fizz"
+		if(i%3==0):
+			ans+="fizz"
 		if(i%5==0):
 			ans+="buzz"
 		if(i%3!=0 and i%5!=0):
-			ans = i
+			ans = str(i)
 		return ans
 	resp = twilio.twiml.Response()
 	for x in range(1,int(digit_pressed)+1):

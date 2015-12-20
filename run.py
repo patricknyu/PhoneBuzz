@@ -99,7 +99,7 @@ def make_call():
 	currentTime = time.strftime('%d.%m.%Y%I.%M.%S')
 	#history.append(currentTime)
 	#callRequests[currentTime] = (delay,num)
-	#time.sleep(int(delay))
+	time.sleep(int(delay))
 	print(request.url_root+"call?time="+currentTime)
 	# Make the call
 	client.calls.create(to=num,  # Any phone number

@@ -1,10 +1,11 @@
 from flask import Flask, request, redirect, render_template
-import twilio_client
+import time
 from twilio.rest import TwilioRestClient
 #from __future__ import with_statement
 import twilio.twiml
 import validator
 import twilio_client
+
 app = Flask(__name__)
 
 callers = {
@@ -13,19 +14,17 @@ callers = {
 
 history = []
 callRequests = {}
-
-"""@app.before_request
+@app.before_request
 def before_request():
   if request.path in ["/call", "/handle-key"]:
 	      if (not validator.isValid(request.url, request.headers['X-Twilio-Signature'], request.form)):
 		            return "That is invalid"
-"""
 @app.route('/')
 @app.route('/index')
 def html_render():
-    global history
-    global callRequests
-    return render_template('index.html')
+	global history
+    	global callRequests
+    	return render_template('index.html')
 
 """@app.route("/hello_monkey",methods = ['GET','POST'])
 def hello_monkey():
@@ -52,11 +51,11 @@ def hello_monkey():
 def call():
 	currentTime = request.args.get('time')
 	resp = twilio.twiml.Response()
-	with resp.gather(action=("/handle-key?time="+currentTime)) as g:
+	with resp.gather(action=("/handle_key?time="+currentTime)) as g:
 		g.say("Press a number. Then press pound.  I will return Fizz Buzz up to that number.")
 	return str(resp)
 
-@app.route("/handle-key",methods = ['GET','POST'])
+@app.route("/handle_key",methods = ['GET','POST'])
 def handle_key():
 	global callRequests
 	digit_pressed = request.form['Digits']
@@ -94,17 +93,17 @@ def make_call():
 	account_sid = "AC293ba385dfd140435b955c184eb6b7a7"
 	auth_token = "ae6f6c20e96fc7a9803a100292ab5284"
 	client = TwilioRestClient(account_sid, auth_token)
-
+	
 	num = request.form['phone']
 	delay = request.form['delay']
 	currentTime = time.strftime('%d.%m.%Y%I.%M.%S')
 	#history.append(currentTime)
 	#callRequests[currentTime] = (delay,num)
 	#time.sleep(int(delay))
-
+	print(request.url_root+"call?time="+currentTime)
 	# Make the call
-	call = client.calls.create(to=num,  # Any phone number
-	from_="+15167145942", # Must be a valid Twilio number
+	client.calls.create(to=num,  # Any phone number
+	from_="5167145942", # Must be a valid Twilio number
 	url=request.url_root+"call?time="+currentTime)
 	
 	return ""

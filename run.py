@@ -18,10 +18,10 @@ app = Flask(__name__)
 def before_request():
 	AUTH_TOKEN = 'ae6f6c20e96fc7a9803a100292ab5284'
 	validator = RequestValidator(AUTH_TOKEN)
-	#def isValid(url,signature,postVars = {}):
-	#	return validator.validate(url,postVars,signature)
+	def isValid(url,signature,postVars = {}):
+		return validator.validate(url,postVars,signature)
  	if request.path in ["/call", "/handle-key"]:
-		if (not validator.validate(request.url, request.headers['X-Twilio-Signature'], request.form)):
+		if (not isValid(request.url, request.headers['X-Twilio-Signature'], request.form)):
 			return "Invalid"
 @app.route('/')
 @app.route('/index')

@@ -3,8 +3,6 @@ import time
 from twilio.rest import TwilioRestClient
 #from __future__ import with_statement
 import twilio.twiml
-import validator
-import twilio_client
 from time import gmtime, strftime
 from twilio.util import RequestValidator
 

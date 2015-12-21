@@ -40,7 +40,7 @@ def handle_key():
 	digit_pressed = request.form['Digits']
 	currentTime = request.args.get('time')
 
-	callRequests[currentTime] += (digit_pressed,)
+	callRequests[currentTime][2] = digit_pressed
 
 	def int_to_fizzbuzz(i):
 		ans = ''
@@ -68,7 +68,7 @@ def replay():
 
 	history.append(currentTime)
 	#delay is 0
-	callRequests[currentTime] = (0,phoneNum)
+	callRequests[currentTime] = [0,phoneNum,-1]
 	account_sid = "AC293ba385dfd140435b955c184eb6b7a7"
 	auth_token = "ae6f6c20e96fc7a9803a100292ab5284"
 	client = TwilioRestClient(account_sid, auth_token)
@@ -92,7 +92,7 @@ def make_call():
 	delay = request.form['delay']
 	currentTime = strftime("%Y-%m-%d %H:%M:%S", gmtime())
 	history.append(currentTime)
-	callRequests[currentTime] = (delay,num)
+	callRequests[currentTime] = [delay,num,-1]
 	time.sleep(int(delay))
 	#print(request.url_root+"call?time="+currentTime)
 	# Make the call

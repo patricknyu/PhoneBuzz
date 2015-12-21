@@ -55,7 +55,7 @@ def handle_key():
 	for x in range(1,int(digit_pressed)+1):
 		resp.say(str(int_to_fizzbuzz(x)))
 	return str(resp)
-
+"""
 @app.route("/replay",methods=['POST'])
 def replay():
 	global history
@@ -78,7 +78,7 @@ def replay():
 	from_ = "5167145942", #Tilio number
 	url=request.url_root+"call?time="+currentTime,send_digits = num)
 	return ""
-
+"""
 @app.route("/make_call",methods=["POST"])
 def make_call():
 	global history

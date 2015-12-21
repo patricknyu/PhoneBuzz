@@ -6,25 +6,29 @@ import twilio.twiml
 import validator
 import twilio_client
 from time import gmtime, strftime
+from twilio.util import RequestValidator
+
 app = Flask(__name__)
 
-callers = {
-	"+17146515438": "Patrick",
-	"+14158675310": "Boots"}
-
-history = []
-callRequests = {}
+#times records the different times we get call requests
+#times = []
+#calls record the calls we get.
+#calls = {}
 @app.before_request
 def before_request():
-  if request.path in ["/call", "/handle-key"]:
-	      if (not validator.isValid(request.url, request.headers['X-Twilio-Signature'], request.form)):
-		            return "That is invalid"
+	AUTH_TOKEN = 'ae6f6c20e96fc7a9803a100292ab5284'
+	validator = RequestValidator(AUTH_TOKEN)
+	#def isValid(url,signature,postVars = {}):
+	#	return validator.validate(url,postVars,signature)
+ 	if request.path in ["/call", "/handle-key"]:
+		if (not validator.validate(request.url, request.headers['X-Twilio-Signature'], request.form)):
+			return "Invalid"
 @app.route('/')
 @app.route('/index')
 def html_render():
-	global history
-    	global callRequests
-    	return render_template('index.html',history =history,callRequests=callRequests)
+	#global times
+    	#global calls
+    	return render_template('index.html')#,times =times,calls=calls)
 
 @app.route("/call",methods = ["POST"])
 def call():
@@ -36,11 +40,11 @@ def call():
 
 @app.route("/handle_key",methods = ['POST'])
 def handle_key():
-	global callRequests
+	#global calls
 	digit_pressed = request.form['Digits']
 	currentTime = request.args.get('time')
 
-	callRequests[currentTime] += (digit_pressed,)
+	#calls[currentTime] += (digit_pressed,)
 
 	def int_to_fizzbuzz(i):
 		ans = ''
@@ -58,17 +62,17 @@ def handle_key():
 """
 @app.route("/replay",methods=['POST'])
 def replay():
-	global history
-	global callRequests
+	global times
+	global calls
 
 	num = request.form['Digits']
 	phoneNum = request.form['Phone']
 
 	currentTime = strftime("%Y-%m-%d %H:%M:%S", gmtime())
 
-	history.append(currentTime)
+	times.append(currentTime)
 	#delay is 0
-	callRequests[currentTime] = [0,phoneNum,-1]
+	calls[currentTime] = [0,phoneNum,-1]
 	account_sid = "AC293ba385dfd140435b955c184eb6b7a7"
 	auth_token = "ae6f6c20e96fc7a9803a100292ab5284"
 	client = TwilioRestClient(account_sid, auth_token)
@@ -82,8 +86,8 @@ def replay():
 
 @app.route("/make_call",methods=["POST"])
 def make_call():
-	global history
-	global callRequests
+	#global times
+	#global calls
 	# Get these credentials from http://twilio.com/user/account
 	account_sid = "AC293ba385dfd140435b955c184eb6b7a7"
 	auth_token = "ae6f6c20e96fc7a9803a100292ab5284"
@@ -92,8 +96,8 @@ def make_call():
 	num = request.form['phone']
 	delay = request.form['delay']
 	currentTime = time.strftime('%d.%m.%Y%I.%M.%S')
-	history.append(currentTime)
-	callRequests[currentTime] = (delay,num)
+	#times.append(currentTime)
+	#calls[currentTime] = (delay,num)
 	time.sleep(int(delay))
 	#print(request.url_root+"call?time="+currentTime)
 	# Make the call

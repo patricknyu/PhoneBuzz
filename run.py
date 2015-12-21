@@ -40,7 +40,7 @@ def handle_key():
 	digit_pressed = request.form['Digits']
 	currentTime = request.args.get('time')
 
-	callRequests[currentTime][2] = digit_pressed
+	callRequests[currentTime] += (digit_pressed,)
 
 	def int_to_fizzbuzz(i):
 		ans = ''
@@ -92,7 +92,7 @@ def make_call():
 	delay = request.form['delay']
 	currentTime = strftime("%Y-%m-%d %H:%M:%S", gmtime())
 	history.append(currentTime)
-	callRequests[currentTime] = [delay,num,-1]
+	callRequests[currentTime] = (delay,num)
 	time.sleep(int(delay))
 	#print(request.url_root+"call?time="+currentTime)
 	# Make the call

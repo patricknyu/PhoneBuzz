@@ -61,7 +61,7 @@ def handle_key():
 	digit_pressed = request.form['Digits']
 	currentTime = request.args.get('time')
 
-	#callRequests[currentTime] += (digit_pressed,)
+	callRequests[currentTime] += (digit_pressed,)
 
 	"""if digit_pressed == "1":
 		resp = twilio.twiml.Response()
@@ -97,10 +97,10 @@ def make_call():
 	num = request.form['phone']
 	delay = request.form['delay']
 	currentTime = time.strftime('%d.%m.%Y%I.%M.%S')
-	#history.append(currentTime)
-	#callRequests[currentTime] = (delay,num)
+	history.append(currentTime)
+	callRequests[currentTime] = (delay,num)
 	time.sleep(int(delay))
-	print(request.url_root+"call?time="+currentTime)
+	#print(request.url_root+"call?time="+currentTime)
 	# Make the call
 	client.calls.create(to=num,  # Any phone number
 	from_="5167145942", # Must be a valid Twilio number

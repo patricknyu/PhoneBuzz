@@ -56,7 +56,7 @@ def handle_key():
 		resp.say(str(int_to_fizzbuzz(x)))
 	return str(resp)
 
-@app.route("/replay",method=['POST'])
+@app.route("/replay",methods=['POST'])
 def replay():
 	global history
 	global callRequests
@@ -78,6 +78,7 @@ def replay():
 	from_ = "5167145942", #Tilio number
 	url=request.url_root+"call?time="+currentTime,send_digits = num)
 	return ""
+
 @app.route("/make_call",methods=["POST"])
 def make_call():
 	global history

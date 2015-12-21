@@ -89,7 +89,7 @@ def make_call():
 	
 	num = request.form['phone']
 	delay = request.form['delay']
-	currentTime = time.strftime('%d.%m.%Y%I.%M.%S')
+	currentTime = strftime("%Y-%m-%d %H:%M:%S", gmtime())
 	history.append(currentTime)
 	callRequests[currentTime] = (delay,num)
 	time.sleep(int(delay))

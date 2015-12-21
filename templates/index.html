@@ -13,16 +13,15 @@
 </form>
 <table style="width:100%">
 <tr>
-<th>Number</th>
+<th>Number called</th>
 <th>Delay</th> 
 <th>Time</th>
 </tr>
 {% for h in history %}
 <tr>
-<td>{{h}}</td>
 <td>{{callRequests[h][1]}}</td>
 <td>{{callRequests[h][0]}}</td>
-<td>{{callRequests[h][2]}}</td>
+<td>{{h}}</td>
 </tr>
 {% endfor %}
 </table>

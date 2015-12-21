@@ -79,6 +79,7 @@ def replay():
 	url=request.url_root+"call?time="+currentTime,send_digits = num)
 	return ""
 """
+
 @app.route("/make_call",methods=["POST"])
 def make_call():
 	global history
@@ -90,7 +91,7 @@ def make_call():
 	
 	num = request.form['phone']
 	delay = request.form['delay']
-	currentTime = strftime("%Y-%m-%d %H:%M:%S", gmtime())
+	currentTime = time.strftime('%d.%m.%Y%I.%M.%S')
 	history.append(currentTime)
 	callRequests[currentTime] = (delay,num)
 	time.sleep(int(delay))

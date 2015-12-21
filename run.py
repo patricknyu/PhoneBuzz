@@ -24,7 +24,7 @@ def before_request():
 def html_render():
 	global history
     	global callRequests
-    	return render_template('index.html')
+    	return render_template('index.html',history =history,callRequests=callRequests)
 
 """@app.route("/hello_monkey",methods = ['GET','POST'])
 def hello_monkey():
